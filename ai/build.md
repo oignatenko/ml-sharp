@@ -1,6 +1,6 @@
 # SHARP — Build Guide
 
-Описан процесс сборки проекта от клонирования до запуска `sharp --help`. Всё, что выходит за эти рамки, считается out of scope.
+Описан процесс локальной сборки проекта от клонирования до запуска `sharp --help`. Всё, что выходит за эти рамки, считается out of scope.
 
 ---
 
@@ -9,6 +9,7 @@
 - **Python**: 3.13
 - **Дисковое пространство**: ~5–10 GB (PyTorch + checkpoint модели)
 - **Git**: для клонирования репозитория
+- **Пакетный менеджер**: `pip` (или `uv`)
 
 GPU не требуется для сборки и запуска `sharp --help`. CUDA нужен только для рендеринга (out of scope).
 
@@ -50,24 +51,16 @@ sharp --help
 
 ---
 
-## 3. Альтернативный способ (uv)
+## 3. Open Questions
 
-Если используется `uv` вместо `pip`:
+### 3.1. Отсутствует директория `tests/`
 
-```bash
-pip install uv
-uv pip compile requirements.in -o requirements.txt --universal
-uv pip install -r requirements.txt
-uv pip install -e .
-sharp --help
-```
+В `pyproject.toml` указано `testpaths = ["tests"]`, но директория `tests/` не найдена в репозитории.
 
----
+**Блокирует задачу**: нет. Сборка и запуск `sharp --help` выполняются без тестов.
 
-## 4. Open Questions
+### 3.2. Отсутствует `MANIFEST.in`
 
-- **Отсутствует директория `tests/`** — в `pyproject.toml` указано `testpaths = ["tests"]`, но директория `tests/` не найдена в репозитории.
-- **Отсутствует `MANIFEST.in`** — неясно, какие не-Python файлы (LICENSE, LICENSE_MODEL) должны включаться в sdist/wheel.
-- **Не настроен CI/CD** — нет `.github/workflows/` или других CI-конфигураций.
-- **Ruff v0.1.7** в `.pre-commit-config.yaml` значительно устарел (актуальная версия >0.9.x).
-- **mypy не имеет конфигурации** — нет `mypy.ini` или настроек в `pyproject.toml`.
+Неясно, какие не-Python файлы (LICENSE, LICENSE_MODEL) должны включаться в sdist/wheel.
+
+**Блокирует задачу**: нет. Не влияет на локальную сборку через `pip install -e .`.
