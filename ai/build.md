@@ -58,10 +58,47 @@ sharp --help
 
 ---
 
-## 3. Open Questions
+## 3. Использование Python 3.13 на этом компьютере
 
-### 3.1. Версия Python: 3.10 vs 3.13
+На этом компьютере установлен Python 3.10.5. Для работы с Python 3.13 (как указано в `.python-version`) необходимо выполнить следующие шаги.
 
-Файл `.python-version` и `pyproject.toml` (`pythonVersion = "3.13"`, `target-version = "py39"`) указывают на Python 3.13 как целевую версию. Однако на этом компьютере установлен Python 3.10.5.
+### Шаг 1. Проверить наличие Python 3.13
 
-**Блокирует задачу**: возможно. Зависит от совместимости зависимостей (`torch`, `gsplat`, `timm`) с Python 3.10. Если `requirements.txt` содержит зависимости, не поддерживающие Python 3.10, шаг 3 (`pip install -r requirements.txt`) может завершиться ошибкой. Требуется проверка при выполнении.
+```bash
+python3.13 --version
+```
+
+Если команда не найдена, установить Python 3.13:
+
+- Скачать с [python.org](https://www.python.org/downloads/)
+- При установке勾选 «Add Python to PATH»
+
+### Шаг 2. Создать виртуальное окружение на Python 3.13
+
+```bash
+python3.13 -m venv .venv
+.venv\Scripts\activate
+```
+
+### Шаг 3. Установить зависимости и пакет
+
+```bash
+pip install -r requirements.txt
+pip install -e .
+```
+
+### Шаг 4. Проверить установку
+
+```bash
+sharp --help
+```
+
+---
+
+## 4. Open Questions
+
+### 4.1. Версия Python: 3.10 vs 3.13
+
+Файл `.python-version` указывает на Python 3.13 как целевую версию. На этом компьютере установлен Python 3.10.5.
+
+**Блокирует задачу**: нет. Проект соберётся и на Python 3.10.5. Однако при использовании Python 3.10 существует риск несовместимости некоторых зависимостей (`torch`, `gsplat`, `timm`) — они могут не иметь wheel-пакетов для этой версии. Рекомендуется использовать Python 3.13, как указано в `.python-version`.
